@@ -1,24 +1,11 @@
-<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
 <script type="text/javascript">
 FB.api(
-	'/266735413142849/feed',
-	'GET',
-	{"fields":"attachments,message,picture,link,name,caption,description,source","limit":"4","access_token":"531029411002728|SPCU_gSthsh86_bVnqm48iHfk0s"},
-	function(response) {
-		for (var i=0; i<response.data.length; i++) {
-			
-			fb_api_html += "<div class='myfb_message'>" + response.data[i]['message'];
-	
-			if (response.data[i]['picture']) {
-				fb_api_html += "<img src='" + response.data[i]['picture'] + "' />";
-			}
-	
-			fb_api_html += "</div>";
-		}
-	
-		$("#fbfeed").html(fb_api_html);
-	}
+  '/266735413142849/feed',
+  'GET',
+  {},
+  function(response) {
+      // Insert your code here
+  }
 );
 </script>
-<ul id="fbfeed"></ul>
