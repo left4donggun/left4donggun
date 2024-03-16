@@ -1,8 +1,24 @@
-<script type="text/javascript" src="js/instafeed.min.js"></script>
-<div id="instafeed"></div>
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
 <script type="text/javascript">
-    var feed = new Instafeed({
-      accessToken: 'IGQWROcjdsaUxodGJia2ZAyc1dSUWVzdnR6dnBhLXBJVTdhR1lPOTF6XzN1M3pnZAlgyY0dKV0tpVWdUSW1UOHR2X0x0QVExXzRrSk9JRmJuZAWVINlEwU3ZAPdEJwV1M0OTFKeElBUWZAYRV9PbFNoYmViZAklFRWxxei1pVTlLZAmMwM0lEMEEZD'
-    });
-    feed.run();
+FB.api(
+	'/266735413142849/feed',
+	'GET',
+	{"fields":"attachments,message,picture,link,name,caption,description,source","limit":"4","access_token":"531029411002728|SPCU_gSthsh86_bVnqm48iHfk0s"},
+	function(response) {
+		for (var i=0; i<response.data.length; i++) {
+			
+			fb_api_html += "<div class='myfb_message'>" + response.data[i]['message'];
+	
+			if (response.data[i]['picture']) {
+				fb_api_html += "<img src='" + response.data[i]['picture'] + "' />";
+			}
+	
+			fb_api_html += "</div>";
+		}
+	
+		$("#fbfeed").html(fb_api_html);
+	}
+);
 </script>
+<ul id="fbfeed"></ul>
