@@ -1,11 +1,38 @@
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
-<script type="text/javascript">
-FB.api(
-  '/266735413142849/feed',
-  'GET',
-  {},
-  function(response) {
-      // Insert your code here
-  }
-);
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SDK.js 실행</title>
+</head>
+<body>
+  <!-- sdk.js 파일을 불러오는 스크립트 태그 -->
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+  <script>
+	    window.addEventListener("load", function() {
+		FB.api(
+			'/266735413142849/feed',
+			'GET',
+			{"fields":"attachments,message,picture,link,name,caption,description,source","limit":"4","access_token":"531029411002728|SPCU_gSthsh86_bVnqm48iHfk0s"},
+			function(response) {
+				for (var i=0; i<response.data.length; i++) {
+					
+					fb_api_html += "<div class='myfb_message'>" + response.data[i]['message'];
+			
+					if (response.data[i]['picture']) {
+						fb_api_html += "<img src='" + response.data[i]['picture'] + "' />";
+					}
+			
+					fb_api_html += "</div>";
+				}
+			
+				$("#fbfeed").html(fb_api_html);
+			}
+		);
+		});
+  </script>
+  <ul id="fbfeed"></ul>
+</body>
+</html>
