@@ -1,36 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SDK.js 실행</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="/js/jquery-1.12.4.min.js"></script>
 </head>
 <body>
-  <!-- sdk.js 파일을 불러오는 스크립트 태그 -->
-  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
-  <script>
-	    window.addEventListener("load", function() {
-		FB.api(
-			'/266735413142849/feed',
-			'GET',
-			{"fields":"attachments,message,picture,link,name,caption,description,source","limit":"4","access_token":"EAAPMUkaax7kBOxZAqnh05ZC3B1AEqElfGjCGhZA2dJRT87D8CGfya0dOYZCm818q3VH8TjZAMZBPrYdEsG543GTZC9B8OhPQaaTuBsKpKBJz08jsTIkmgfiZBS4b4lkx2aKB9g2g1OAOeqKLHxQZCJEV0uLDsnc5xgBJnihFuzrTZB5ZBqW1vz2ZCHyJtFhJk5Q8i7jsylaFL7AZD"},
-			function(response) {
-				for (var i=0; i<response.data.length; i++) {
-					
-					fb_api_html += "<div class='myfb_message'>" + response.data[i]['message'];
-			
-					if (response.data[i]['picture']) {
-						fb_api_html += "<img src='" + response.data[i]['picture'] + "' />";
-					}
-			
-					fb_api_html += "</div>";
-				}
-			
-				$("#fbfeed").html(fb_api_html);
-			}
-		);
-		});
-  </script>
-  <ul id="fbfeed"></ul>
+    <div class="slider" id="instafeed">
+    </div>
+    <script>
+        /* 구글애널리틱스 */
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-GCFTW2SRM2');
+
+        $(function(){
+
+            /* 인스타게시물 */
+            let instagramAccessToken = "IGQWROaTc2ZAmI5QUxUS1BXZATVXWmt4eU1LbzVSZAG5RdXlQc1pTVk11RGk0VE93WWo0dzg1TEtLb2dCVEp1bDBMblNIOVNxOU9QSzVMZAmNHU2s3R19fbk5qdWFEOXFTclN3dWxUYjkzODZApZAwZDZD";
+            $.ajax({
+                type: "GET",
+                url: "https://graph.instagram.com/me/media",
+                data:{
+                    fields:"permalink,media_url,caption,media_type,thumbnail_url"
+                    ,limit:8
+                    ,access_token:instagramAccessToken
+                },
+                success: function(result) {
+                    $("#instafeed").html("");
+                    for(let i=0;i<result.data.length;i++){
+                        let mediaUrl =  result.data[i].media_url;
+                        if(result.data[i].media_type == 'VIDEO')mediaUrl = result.data[i].thumbnail_url;
+
+                        let li ='';
+                        li += "    <div class=\"item\">";
+                        li += "        <div class=\"inr\">";
+                        li += "            <a href=\"" + result.data[i].permalink + "\" target=\"_blank\" title=\"새창\">\n";
+                        li += "                <span class='img'><img alt='' src='"+(mediaUrl)+"'/></span>";
+                        li += "                <span class='tit'>"+result.data[i].caption+"</span>";
+                        li += "            </a>";
+                        li += "        </div>";
+                        li += "    </div>";
+                        $("#instafeed").append(li);
+                    }
+                }
+                , error: function(data, status, err) {
+                    console.log('instagram','err',data, status, err);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
