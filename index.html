@@ -3,53 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <title>Dynamic Calculation</title>
+    <style>
+        body {
+            background-color: #36266B;
+            color: #FFFFFF;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #614BA6;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .container input {
+            background-color: #8477DB;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            color: #FFFFFF;
+            font-size: 1.2em;
+            margin: 5px 0;
+            width: 100px;
+        }
+        .container p {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div class="slider" id="instafeed">
+    <div class="container">
+        <input type="number" id="input1" placeholder="0">
+        <p id="result">소요시간: 0.00h</p>
     </div>
     <script>
-        /* 구글애널리틱스 */
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-GCFTW2SRM2');
-
-        $(function(){
-
-            /* 인스타게시물 */
-            let instagramAccessToken = "IGQWROaTc2ZAmI5QUxUS1BXZATVXWmt4eU1LbzVSZAG5RdXlQc1pTVk11RGk0VE93WWo0dzg1TEtLb2dCVEp1bDBMblNIOVNxOU9QSzVMZAmNHU2s3R19fbk5qdWFEOXFTclN3dWxUYjkzODZApZAwZDZD";
-            $.ajax({
-                type: "GET",
-                url: "https://graph.instagram.com/me/media",
-                data:{
-                    fields:"permalink,media_url,caption,media_type,thumbnail_url"
-                    ,limit:8
-                    ,access_token:instagramAccessToken
-                },
-                success: function(result) {
-                    $("#instafeed").html("");
-                    for(let i=0;i<result.data.length;i++){
-                        let mediaUrl =  result.data[i].media_url;
-                        if(result.data[i].media_type == 'VIDEO')mediaUrl = result.data[i].thumbnail_url;
-
-                        let li ='';
-                        li += "    <div class=\"item\">";
-                        li += "        <div class=\"inr\">";
-                        li += "            <a href=\"" + result.data[i].permalink + "\" target=\"_blank\" title=\"새창\">\n";
-                        li += "                <span class='img'><img alt='' src='"+(mediaUrl)+"'/></span>";
-                        li += "                <span class='tit'>"+result.data[i].caption+"</span>";
-                        li += "            </a>";
-                        li += "        </div>";
-                        li += "    </div>";
-                        $("#instafeed").append(li);
-                    }
-                }
-                , error: function(data, status, err) {
-                    console.log('instagram','err',data, status, err);
-                }
-            });
+        document.getElementById('input1').addEventListener('input', function() {
+            const value = parseFloat(this.value);
+            let result = 0;
+            if (!isNaN(value)) {
+                result = (value / 60).toFixed(2);
+            }
+            document.getElementById('result').textContent = `소요시간: ${result}h`;
         });
     </script>
 </body>
